@@ -10,7 +10,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=production node index.js",
-    "dev": "NODE_ENV=development node --watch index.js"
+    "dev": "NODE_ENV=development node --watch index.js",
+    "build:ui": "rm -rf dist && cd ../frontend/ && npm run build && cp -r dist ../backend"
   },
   "dependencies": {
     "dotenv": "^17.2.1",

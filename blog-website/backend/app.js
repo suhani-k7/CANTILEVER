@@ -7,6 +7,7 @@ const blogsRouter = require('./controllers/blogs')
 
 const app = express()
 app.use(express.json())
+app.use(express.static('dist'))
 
 logger.info('connecting to', config.MONGODB_URI)
 

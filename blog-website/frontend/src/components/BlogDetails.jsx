@@ -1,23 +1,35 @@
 import { useNavigate, useParams } from "react-router-dom";
-import useFetch from "../services/useFetch";
+import blogsServices from "../services/blogs";
+import { useEffect, useState } from "react";
+
 
 const BlogDetails = () => {
   const { id } = useParams();
-  const { data: blog, error, isPending } = useFetch('http://localhost:8000/blogs/' + id);
+  const [blog,setBlog] = useState([])
+    const initiateBlogs = () => {
+      blogsServices
+                    .getOne(id)
+                    .then(response => {
+                      setBlog(response.data)
+                      console.log(response)
+                    })
+                   
+    }
+ 
+    useEffect(initiateBlogs,[id])
   const history=useNavigate();
-  
+ 
   const handleClick=()=>{
-    fetch('http://localhost:8000/blogs/'+blog.id,{
-      method:'DELETE'
-    }).then(()=> {
-    history('/',{replace:false});
-  })
+    blogsServices
+    .deleteBlog(id)
+    .then(()=> {
+      history('/',{replace:false});
+    })
   }
+
 
   return (
     <div className="blog-details">
-      { isPending && <div>Loading...</div> }
-      { error && <div>{ error }</div> }
       { blog && (
         <article>
           <h2>{ blog.title }</h2>
