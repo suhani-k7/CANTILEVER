@@ -1,0 +1,74 @@
+import React, { useState } from "react";
+import "./TaskBox.css";
+
+const TaskBox = ({ tasks, setTasks }) => {
+  const [newTaskText, setNewTaskText] = useState("");
+  const [newTaskDescription, setNewTaskDescription] = useState("");
+  const [newTaskDueDate, setNewTaskDueDate] = useState("");
+  const [newTaskPriority, setNewTaskPriority] = useState("Medium");
+  const [confirmation, setConfirmation] = useState(false); // ✅
+
+  const addTask = () => {
+    if (newTaskText.trim() === "") return;
+    const safeTasks = tasks || [];
+    const newTask = {
+      id: tasks.length + 1,
+      text: newTaskText,
+      done: false,
+      description: newTaskDescription,
+      dueDate: newTaskDueDate,
+      priority: newTaskPriority,
+    };
+
+    setTasks([...tasks, newTask]);
+
+    // Reset input fields
+    setNewTaskText("");
+    setNewTaskDescription("");
+    setNewTaskDueDate("");
+    setNewTaskPriority("Medium");
+
+    // ✅ Show confirmation
+    setConfirmation(true);
+    setTimeout(() => setConfirmation(false), 2000); // auto-hide after 2 seconds
+  };
+
+  return (
+    <div className="task-box">
+      <h2>Add New Task</h2>
+
+      {confirmation && (
+        <p className="confirmation">✅ Task added successfully!</p>
+      )}
+
+      <input
+        type="text"
+        value={newTaskText}
+        onChange={(e) => setNewTaskText(e.target.value)}
+        placeholder="Enter a new task"
+      />
+      <input
+        type="text"
+        value={newTaskDescription}
+        onChange={(e) => setNewTaskDescription(e.target.value)}
+        placeholder="Task description"
+      />
+      <input
+        type="date"
+        value={newTaskDueDate}
+        onChange={(e) => setNewTaskDueDate(e.target.value)}
+      />
+      <select
+        value={newTaskPriority}
+        onChange={(e) => setNewTaskPriority(e.target.value)}
+      >
+        <option value="High">High</option>
+        <option value="Medium">Medium</option>
+        <option value="Low">Low</option>
+      </select>
+      <button onClick={addTask}>Add Task</button>
+    </div>
+  );
+};
+
+export default TaskBox;
