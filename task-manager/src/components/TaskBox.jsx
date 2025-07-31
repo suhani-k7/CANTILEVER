@@ -5,7 +5,8 @@ const TaskBox = ({ tasks, setTasks }) => {
   const [newTaskText, setNewTaskText] = useState("");
   const [newTaskDescription, setNewTaskDescription] = useState("");
   const [newTaskDueDate, setNewTaskDueDate] = useState("");
-  const [newTaskPriority, setNewTaskPriority] = useState("Medium");
+  const [newTaskPriority, setNewTaskPriority] = useState("");
+  const [newTaskCategory, setNewTaskCategory] = useState("");
   const [confirmation, setConfirmation] = useState(false); // ✅
 
   const addTask = () => {
@@ -18,18 +19,16 @@ const TaskBox = ({ tasks, setTasks }) => {
       description: newTaskDescription,
       dueDate: newTaskDueDate,
       priority: newTaskPriority,
+      category: newTaskCategory,
     };
 
     setTasks([...tasks, newTask]);
-
-    // Reset input fields
     setNewTaskText("");
     setNewTaskDescription("");
     setNewTaskDueDate("");
-    setNewTaskPriority("Medium");
-
-    // ✅ Show confirmation
+    setNewTaskPriority("");
     setConfirmation(true);
+    setNewTaskCategory("");
     setTimeout(() => setConfirmation(false), 2000); // auto-hide after 2 seconds
   };
 
@@ -62,9 +61,26 @@ const TaskBox = ({ tasks, setTasks }) => {
         value={newTaskPriority}
         onChange={(e) => setNewTaskPriority(e.target.value)}
       >
+        <option value="" disabled>
+          Select Priority
+        </option>
         <option value="High">High</option>
         <option value="Medium">Medium</option>
         <option value="Low">Low</option>
+      </select>
+      <select
+        value={newTaskCategory}
+        onChange={(e) => setNewTaskCategory(e.target.value)}
+      >
+        <option value="" disabled>
+          Select Category
+        </option>
+        <option value="Work">Work</option>
+        <option value="Study">Study</option>
+        <option value="Personal">Personal</option>
+        <option value="Wellness">Wellness</option>
+        <option value="Errands">Errands</option>
+        <option value="Extra">Extra</option>
       </select>
       <button onClick={addTask}>Add Task</button>
     </div>

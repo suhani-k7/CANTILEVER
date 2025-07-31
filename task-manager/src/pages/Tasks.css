@@ -49,3 +49,21 @@
   text-decoration: line-through;
   color: gray;
 }
+
+.filter-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.filter-controls select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+.filter-controls h3{
+  margin-bottom: 20px;
+}

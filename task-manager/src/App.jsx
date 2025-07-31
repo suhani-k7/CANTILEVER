@@ -16,7 +16,7 @@ function App() {
   const [editedText, setEditedText] = useState("");
   const [newTaskDescription, setNewTaskDescription] = useState("");
   const [newTaskDueDate, setNewTaskDueDate] = useState("");
-  const [newTaskPriority, setNewTaskPriority] = useState("Medium");
+  const [newTaskPriority, setNewTaskPriority] = useState("");
 
   const addTask = () => {
     if (newTaskText.trim() === "") return;
@@ -32,7 +32,7 @@ function App() {
     setNewTaskText("");
     setNewTaskDescription("");
     setNewTaskDueDate("");
-    setNewTaskPriority("Medium");
+    setNewTaskPriority("");
   };
 
   const deleteTask = (id) => setTasks(tasks.filter(task => task.id !== id));
