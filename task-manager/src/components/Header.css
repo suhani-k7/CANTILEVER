@@ -28,3 +28,30 @@ nav a:hover {
   background-color: #c2185b;
   color: white;
 }
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 20px;
+}
+
+.logout-btn {
+  padding: 4px 10px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.app-header > div {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 600px) {
+  .app-header > div {
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+  }
+}

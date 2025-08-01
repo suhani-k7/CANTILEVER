@@ -1,11 +1,29 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Header.css';
 
-function Header() {
+function Header({ user, setUser }) {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setUser(null);
+    navigate('/login');
+  };
+
   return (
     <header className="app-header">
-      <h1>Task Manager</h1>
+      <div>
+        <h1>Task Manager</h1>
+        {user && (
+          <div className="user-info">
+            <span>Logged in as <strong>{user.username}</strong></span>
+            <button className="logout-btn" onClick={handleLogout}>Logout</button>
+          </div>
+        )}
+      </div>
+
       <nav>
         <Link to="/">Home</Link>
         <Link to="/add-task">Add Task</Link>
