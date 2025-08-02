@@ -1,0 +1,51 @@
+.tasks-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.task-card {
+  background-color: #f5ecf1;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  padding: 1.2rem;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.task-info h3 {
+  margin: 0 0 0.5rem;
+}
+
+.task-info p {
+  margin: 0.2rem 0;
+}
+
+.task-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.task-actions button {
+  padding: 0.4rem 0.6rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #f9e3f3;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.task-actions button:hover {
+  background-color: #9d879a;
+}
+
+.done {
+  text-decoration: line-through;
+  color: gray;
+}

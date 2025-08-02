@@ -5,28 +5,28 @@ import { useEffect, useState } from "react";
 
 const BlogDetails = () => {
   const { id } = useParams();
-  const [blog,setBlog] = useState([])
+  const [blog,setBlog] = useState([]);
+  const navigate = useNavigate();
+
     const initiateBlogs = () => {
       blogsServices
                     .getOne(id)
                     .then(response => {
-                      setBlog(response.data)
-                      console.log(response)
-                    })
+                      setBlog(response.data);
+                    });
                    
-    }
+    };
  
     useEffect(initiateBlogs,[id])
-  const history=useNavigate();
  
   const handleClick=()=>{
     blogsServices
     .deleteBlog(id)
     .then(()=> {
-      history('/',{replace:false});
-    })
-  }
-
+      navigate('/',{replace:false});
+    });
+  };
+  const loggedUser = JSON.parse(localStorage.getItem("loggedBlogUser"));
 
   return (
     <div className="blog-details">
@@ -36,7 +36,10 @@ const BlogDetails = () => {
           <p>Written by { blog.author }</p>
           <div>{ blog.body }</div>
           <button onClick={handleClick}>Delete</button>
-        </article>
+          {loggedUser?.username === blog.author && (
+            <button onClick={() => navigate(`/edit/${blog.id}`)}>Edit</button>
+          )}
+          </article>
       )}
     </div>
   );
