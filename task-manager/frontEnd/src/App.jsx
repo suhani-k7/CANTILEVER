@@ -20,17 +20,8 @@ function App() {
   const [newTaskPriority, setNewTaskPriority] = useState("Medium");
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedTaskappUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      taskService.setToken(user.token)
-    }
-  }, [])
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const fetchData = async () => {
       if (user) {
         const loadedTasks = await taskService.getAll()
         const returnedTasks = loadedTasks.filter(task => task.user == user.id)
@@ -41,6 +32,17 @@ function App() {
         setTasks(updatedTasks)
       }
     }
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedTaskappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      taskService.setToken(user.token)
+    }
+  }, [])
+
+  useEffect(() => {
     fetchData()
   },[user])
 
@@ -48,29 +50,32 @@ function App() {
     await taskService.deleteTask(id)
     setTasks(tasks.filter(task => task.id !== id))
   }
-  const toggleDone = (id) => setTasks(tasks.map(task => task.id === id ? { ...task, done: !task.done } : task));
+
+  const toggleDone = async (id) => {
+    const taskToEdit = tasks.find(task => task.id === id)
+    const updatedTask = {...taskToEdit, done: !taskToEdit.done}
+    try {
+      const savedTask = await taskService.changeTask(id, updatedTask);
+      setTasks(tasks.map(task => task.id === id ? savedTask : task));
+    } catch (error) {
+      console.error("Failed to update task:", error);
+    }
+  }
+
   const startEditing = (task) => {
     setEditingTaskId(task.id);
     setEditedText(task.text);
   };
   const saveEditedTask = async (id) => {
     const taskToEdit = tasks.find(task => task.id === id)
-    const updatedTask = {
-      id: taskToEdit.id,
-      text: editedText,
-      done: taskToEdit.done,
-      description: taskToEdit.description,
-      dueDate: taskToEdit.dueDate,
-      priority: taskToEdit.priority,
-      user: taskToEdit.user
-    }
+    const updatedTask = {...taskToEdit, text:editedText}
     try {
-    const savedTask = await taskService.changeTask(id, updatedTask);
-    setTasks(tasks.map(task => task.id === id ? savedTask : task));
-    setEditingTaskId(null);
-  } catch (error) {
-    console.error("Failed to update task:", error);
-  }
+      const savedTask = await taskService.changeTask(id, updatedTask);
+      setTasks(tasks.map(task => task.id === id ? savedTask : task));
+      setEditingTaskId(null);
+    } catch (error) {
+      console.error("Failed to update task:", error);
+    }
   };
 
   return (
@@ -115,6 +120,7 @@ function App() {
                   newTaskPriority={newTaskPriority}
                   setNewTaskPriority={setNewTaskPriority}
                   user={user}
+                  fetchData={fetchData}
                 />
               }
             />

@@ -1,20 +1,19 @@
-import React, { useState } from 'react';
-import './Tasks.css'; // If not already, link a CSS file or use App.css
+import {useState} from 'react';
+import './Tasks.css';
 
 function Tasks({ tasks, toggleDone, deleteTask, startEditing, editingTaskId, editedText, setEditedText, saveEditedTask }) {
+
   const [showPriority, setShowPriority] = useState("All");
   const [sortOrder, setSortOrder] = useState("asc");
   const [showDone, setShowDone] = useState("All");
-
   const filteredTasks = tasks.filter((task) => {
-    const matchesPriority = showPriority === "All" || task.priority === showPriority;
-    const matchesDone =
-      showDone === "All" ||
-      (showDone === "Done" && task.done) ||
-      (showDone === "Not Done" && !task.done);
+  const matchesPriority = showPriority === "All" || task.priority === showPriority;
+  const matchesDone =
+    showDone === "All" ||
+    (showDone === "Done" && task.done) ||
+    (showDone === "Not Done" && !task.done);
     return matchesPriority && matchesDone;
   });
-
   const sortedTasks = [...filteredTasks].sort((a, b) => {
     return sortOrder === 'asc'
       ? new Date(a.dueDate) - new Date(b.dueDate)
@@ -24,33 +23,30 @@ function Tasks({ tasks, toggleDone, deleteTask, startEditing, editingTaskId, edi
   return (
     <div className="container">
       <h2>Existing Tasks</h2>
-      
-      {/* Optional: filter controls (can be styled later) */}
-      <div style={{ marginBottom: '1rem' }}>
-        <label>Priority:
-          <select value={showPriority} onChange={(e) => setShowPriority(e.target.value)}>
-            <option value="All">All</option>
-            <option value="High">High</option>
-            <option value="Medium">Medium</option>
-            <option value="Low">Low</option>
-          </select>
-        </label>
 
-        <label style={{ marginLeft: '1rem' }}>Status:
-          <select value={showDone} onChange={(e) => setShowDone(e.target.value)}>
-            <option value="All">All</option>
-            <option value="Done">Done</option>
-            <option value="Not Done">Not Done</option>
-          </select>
-        </label>
+      <div className="filter-controls">
+        <label>Filter by Priority:</label>
+        <select value={showPriority} onChange={(e) => setShowPriority(e.target.value)}>
+          <option value="All">All</option>
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select>
 
-        <label style={{ marginLeft: '1rem' }}>Sort by Due Date:
-          <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
-            <option value="asc">Earliest First</option>
-            <option value="desc">Latest First</option>
-          </select>
-        </label>
+        <label>Filter by Status:</label>
+        <select value={showDone} onChange={(e) => setShowDone(e.target.value)}>
+          <option value="All">All</option>
+          <option value="Done">Done</option>
+          <option value="Not Done">Not Done</option>
+        </select>
       </div>
+      <label>
+        Sort by Due Date :   
+        <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
+          <option value="asc">Earliest First</option>
+          <option value="desc">Latest First</option>
+        </select>
+      </label>
 
       <div className="tasks-container">
         {sortedTasks.map((task) => (
@@ -72,7 +68,7 @@ function Tasks({ tasks, toggleDone, deleteTask, startEditing, editingTaskId, edi
                 <div className="task-info">
                   <h3 className={task.done ? "done" : ""}>{task.text}</h3>
                   <p>{task.description}</p>
-                  <p><strong>Due:</strong> {task.dueDate}</p>
+                  <p><strong>Due:</strong> {task.dueDate.slice(0,10)}</p>
                   <p><strong>Priority:</strong> {task.priority}</p>
                 </div>
                 <div className="task-actions">

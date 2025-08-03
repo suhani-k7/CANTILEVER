@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./TaskBox.css";
 import taskService from '../services/tasks'
 
-const TaskBox = ({ tasks, setTasks, user }) => {
+const TaskBox = ({ tasks, user, fetchData }) => {
   const [newTaskText, setNewTaskText] = useState("");
   const [newTaskDescription, setNewTaskDescription] = useState("");
   const [newTaskDueDate, setNewTaskDueDate] = useState("");
@@ -21,9 +21,11 @@ const TaskBox = ({ tasks, setTasks, user }) => {
       user: user.id
     };
 
+    console.log(newTask.id)
+
     await taskService.create(newTask)
 
-    setTasks([...tasks, newTask]);
+    fetchData()
 
     // Reset input fields
     setNewTaskText("");
