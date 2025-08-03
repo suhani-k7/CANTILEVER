@@ -1,45 +1,41 @@
-import React, { useState, useEffect } from "react";
+import { useState,useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Create from "./components/Create";
 import BlogDetails from "./components/BlogDetails";
 import NotFound from "./components/NotFound";
-import LoginSignup from "./pages/LoginSignup";
-import EditBlog from "./components/EditBlog"; // Make sure this file exists and is correct
+import LoginSignup from "./components/loginSignup";
+import blogService from "./services/blogs"
 
 function App() {
   const [user, setUser] = useState(null);
-
   useEffect(() => {
-    const loggedUserJSON = localStorage.getItem("loggedBlogUser");
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
     }
-  }, []);
+  }, [])
 
   return (
     <Router>
       <div className="App">
-        {/* Navbar only if logged in */}
-        {user && <Navbar />}
+        <Navbar  user={user} setUser={setUser}/>
         <div className="content">
           <Routes>
             {!user ? (
               <>
-                <Route path="*" element={<Navigate to="/login" replace />} />
-                <Route path="/login" element={<LoginSignup setUser={setUser} />} />
+                <Route path="*" element={<LoginSignup setUser={setUser} user={user}/>} />
               </>
             ) : (
               <>
-                <Route path="/" element={<Home />} />
-                <Route path="/create" element={<Create />} />
+                <Route path="/" element={<Home user={user}/>} />
+                <Route path="/create" element={<Create user={user} />} />
                 <Route path="/blogs/:id" element={<BlogDetails />} />
-                <Route path="/edit/:id" element={<EditBlog />} />
                 <Route path="*" element={<NotFound />} />
-              </>
-            )}
+              </>)}
           </Routes>
         </div>
       </div>

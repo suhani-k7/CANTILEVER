@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import blogServices from "../services/blogs";
-const Create = () => {
+const Create = ({user}) => {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [author, setAuthor] = useState('mario');
@@ -11,7 +11,7 @@ const Create = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const blog = { title, body, author };
+    const blog = { title, body, author, user: user.id };
 
 
     setIsPending(true);

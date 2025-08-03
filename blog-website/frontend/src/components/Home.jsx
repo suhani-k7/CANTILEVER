@@ -3,19 +3,19 @@ import BlogList from "./BlogList";
 import blogServices from "../services/blogs";
 
 
-const Home = () => {
+const Home = ({user}) => {
   const [blogs,setBlogs] = useState([])
-  const initiateBlogs = () => {
-    blogServices
-                  .getAll()
-                  .then(response => {
-                    setBlogs(response.data)
-                  })
-                 
-  }
 
-
-  useEffect(initiateBlogs,[])
+  useEffect(() => {
+    const fetchData = async () => {
+      if (user) {
+        const loadedBlogs = await blogServices.getAll()
+        const allBlogs = loadedBlogs.data
+        setBlogs(allBlogs.filter(blog => blog.user == user.id))
+      }
+    }
+    fetchData()
+  },[user])
 
 
   return (
